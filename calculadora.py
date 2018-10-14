@@ -22,19 +22,19 @@ class Calculadora(Gtk.Window):
         self.btn_8 = Gtk.Button(label="8")
         self.btn_9 = Gtk.Button(label="9")
 
-        self.btn_suma           = Gtk.Button(label="+")
-        self.btn_resta          = Gtk.Button(label="-")
-        self.btn_division       = Gtk.Button(label="÷")
-        self.btn_multiplicacion = Gtk.Button(label="×")
-        self.btn_modulo         = Gtk.Button(label="%")
-        self.btn_raiz           = Gtk.Button(label="√")
-        self.btn_aparentesis    = Gtk.Button(label="(")
-        self.btn_cparentesis    = Gtk.Button(label=")")
-        self.btn_punto          = Gtk.Button(label=".")
-        self.btn_igual          = Gtk.Button(label="=")
-        self.btn_limpiar        = Gtk.Button(label="C")
-        self.btn_borrar         = Gtk.Button(label="<=")
-        self.btn_exponente      = Gtk.Button(label="x²")
+        self.btn_sumar       = Gtk.Button(label="+")
+        self.btn_restar      = Gtk.Button(label="-")
+        self.btn_dividir     = Gtk.Button(label="÷")
+        self.btn_multiplicar = Gtk.Button(label="×")
+        self.btn_modulo      = Gtk.Button(label="%")
+        self.btn_raiz        = Gtk.Button(label="√")
+        self.btn_aparentesis = Gtk.Button(label="(")
+        self.btn_cparentesis = Gtk.Button(label=")")
+        self.btn_punto       = Gtk.Button(label=".")
+        self.btn_igual       = Gtk.Button(label="=")
+        self.btn_limpiar     = Gtk.Button(label="C")
+        self.btn_borrar      = Gtk.Button(label="←")
+        self.btn_exponente   = Gtk.Button(label="x²")
 
         self.propiedades()
         self.escuchas()
@@ -42,6 +42,7 @@ class Calculadora(Gtk.Window):
 
     def propiedades(self):
         self.set_resizable(False)
+        self.set_position(1)
 
         self.pantalla.set_max_length(35)
         self.pantalla.set_editable(False)
@@ -50,7 +51,6 @@ class Calculadora(Gtk.Window):
 
         self.grid.set_row_spacing(4)
         self.grid.set_column_spacing(4)
-
         self.grid.set_margin_top(10)
         self.grid.set_margin_left(10)
         self.grid.set_margin_right(10)
@@ -66,50 +66,76 @@ class Calculadora(Gtk.Window):
         self.btn_7.set_can_focus(False)
         self.btn_8.set_can_focus(False)
         self.btn_9.set_can_focus(False)
-        self.btn_suma.set_can_focus(False)
-        self.btn_resta.set_can_focus(False)
-        self.btn_division.set_can_focus(False)
-        self.btn_multiplicacion.set_can_focus(False)
+
+        self.btn_sumar.set_can_focus(False)
+        self.btn_sumar.set_tooltip_text("Suma")
+
+        self.btn_restar.set_can_focus(False)
+        self.btn_restar.set_tooltip_text("Resta")
+
+        self.btn_dividir.set_can_focus(False)
+        self.btn_dividir.set_tooltip_text("División")
+
+        self.btn_multiplicar.set_can_focus(False)
+        self.btn_multiplicar.set_tooltip_text("Multiplicación")
+
         self.btn_modulo.set_can_focus(False)
+        self.btn_modulo.set_tooltip_text("Porcentaje")
+
         self.btn_raiz.set_can_focus(False)
+        self.btn_raiz.set_tooltip_text("Raíz")
+
         self.btn_aparentesis.set_can_focus(False)
+        self.btn_aparentesis.set_tooltip_text("Abrir paréntesis")
+
         self.btn_cparentesis.set_can_focus(False)
+        self.btn_cparentesis.set_tooltip_text("Cerrar paréntesis")
+
         self.btn_punto.set_can_focus(False)
+        self.btn_punto.set_tooltip_text("Punto decimal")
+
         self.btn_igual.set_can_focus(False)
+        self.btn_igual.set_tooltip_text("Resultado")
+
         self.btn_limpiar.set_can_focus(False)
+        self.btn_limpiar.set_tooltip_text("Borrar todo")
+
         self.btn_borrar.set_can_focus(False)
+        self.btn_borrar.set_tooltip_text("Borrar")
+
         self.btn_exponente.set_can_focus(False)
+        self.btn_exponente.set_tooltip_text("Exponente")
 
     def armar(self):
         self.add(self.grid)
 
         self.grid.attach(self.pantalla, 0, 0, 6, 1)
 
-        self.grid.attach(self.btn_7,        0, 1, 1, 1)
-        self.grid.attach(self.btn_8,        1, 1, 1, 1)
-        self.grid.attach(self.btn_9,        2, 1, 1, 1)
-        self.grid.attach(self.btn_division, 3, 1, 1, 1)
-        self.grid.attach(self.btn_borrar,   4, 1, 1, 1)
-        self.grid.attach(self.btn_limpiar,  5, 1, 1, 1)
+        self.grid.attach(self.btn_7,       0, 1, 1, 1)
+        self.grid.attach(self.btn_8,       1, 1, 1, 1)
+        self.grid.attach(self.btn_9,       2, 1, 1, 1)
+        self.grid.attach(self.btn_dividir, 3, 1, 1, 1)
+        self.grid.attach(self.btn_borrar,  4, 1, 1, 1)
+        self.grid.attach(self.btn_limpiar, 5, 1, 1, 1)
 
-        self.grid.attach(self.btn_4,              0, 2, 1, 1)
-        self.grid.attach(self.btn_5,              1, 2, 1, 1)
-        self.grid.attach(self.btn_6,              2, 2, 1, 1)
-        self.grid.attach(self.btn_multiplicacion, 3, 2, 1, 1)
-        self.grid.attach(self.btn_aparentesis,    4, 2, 1, 1)
-        self.grid.attach(self.btn_cparentesis,    5, 2, 1, 1)
+        self.grid.attach(self.btn_4,           0, 2, 1, 1)
+        self.grid.attach(self.btn_5,           1, 2, 1, 1)
+        self.grid.attach(self.btn_6,           2, 2, 1, 1)
+        self.grid.attach(self.btn_multiplicar, 3, 2, 1, 1)
+        self.grid.attach(self.btn_aparentesis, 4, 2, 1, 1)
+        self.grid.attach(self.btn_cparentesis, 5, 2, 1, 1)
 
         self.grid.attach(self.btn_1,         0, 3, 1, 1)
         self.grid.attach(self.btn_2,         1, 3, 1, 1)
         self.grid.attach(self.btn_3,         2, 3, 1, 1)
-        self.grid.attach(self.btn_resta,     3, 3, 1, 1)
+        self.grid.attach(self.btn_restar,    3, 3, 1, 1)
         self.grid.attach(self.btn_exponente, 4, 3, 1, 1)
         self.grid.attach(self.btn_raiz,      5, 3, 1, 1)
 
         self.grid.attach(self.btn_0,      0, 4, 1, 1)
         self.grid.attach(self.btn_punto,  1, 4, 1, 1)
         self.grid.attach(self.btn_modulo, 2, 4, 1, 1)
-        self.grid.attach(self.btn_suma,   3, 4, 1, 1)
+        self.grid.attach(self.btn_sumar,  3, 4, 1, 1)
         self.grid.attach(self.btn_igual,  4, 4, 2, 1)
 
     def escuchas(self):
@@ -124,10 +150,10 @@ class Calculadora(Gtk.Window):
         self.btn_8.connect("clicked", self.btn_clicked)
         self.btn_9.connect("clicked", self.btn_clicked)
 
-        self.btn_suma.connect("clicked", self.btn_clicked)
-        self.btn_resta.connect("clicked", self.btn_clicked)
-        self.btn_division.connect("clicked", self.btn_clicked)
-        self.btn_multiplicacion.connect("clicked", self.btn_clicked)
+        self.btn_sumar.connect("clicked", self.btn_clicked)
+        self.btn_restar.connect("clicked", self.btn_clicked)
+        self.btn_dividir.connect("clicked", self.btn_clicked)
+        self.btn_multiplicar.connect("clicked", self.btn_clicked)
 
         self.btn_punto.connect("clicked", self.btn_clicked)
         self.btn_modulo.connect("clicked", self.btn_clicked)
@@ -166,12 +192,11 @@ class Calculadora(Gtk.Window):
         self.texto = self.texto.replace("÷", "/")
 
         try:
+            # Evalua la expresión matemática representada en la calculadora.
             self.texto = str(eval(self.texto))
         except SyntaxError:
-            # self.texto = ""
             self.mostrar_error("Expresión no válida")
         except ZeroDivisionError:
-            # self.texto = ""
             self.mostrar_error("División entre cero")
         finally:
             self.pantalla.set_text(self.texto)
@@ -183,24 +208,23 @@ class Calculadora(Gtk.Window):
         dialog.destroy()
 
     def key_controller(self, widget, event):
+        caracter = ""
         n = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", "%",
         "(", ")", "."]
 
-        if event.string in n:
-            if len(self.texto) < 35:
-                self.texto += event.string
-            self.pantalla.set_text(self.texto)
-        elif event.hardware_keycode == 36 or event.hardware_keycode == 104:
+        if event.hardware_keycode == 36 or event.hardware_keycode == 104:
             self.calcular(widget)
         elif event.hardware_keycode == 22:
             self.borrar(widget)
-        elif event.string == "*":
+        else:
+            if event.string in n:
+                caracter = event.string
+            elif event.string == "*":
+                caracter = "×"
+            elif event.string == "/":
+                caracter= "÷"
             if len(self.texto) < 35:
-                self.texto += "×"
-            self.pantalla.set_text(self.texto)
-        elif event.string == "/":
-            if len(self.texto) < 35:
-                self.texto += "÷"
+                self.texto += caracter
             self.pantalla.set_text(self.texto)
 
 if __name__ == "__main__":

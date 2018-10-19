@@ -1,9 +1,12 @@
+# calculadora.py
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from menu import create_menubar
 
 class Calculadora(Gtk.Window):
 
+    # Constructor
     def __init__(self):
         Gtk.Window.__init__(self, title="Calculadora")
 
@@ -11,12 +14,15 @@ class Calculadora(Gtk.Window):
         self.botones = []
         self.grid = Gtk.Grid()
         self.pantalla = Gtk.Entry()
+        self.menubar = create_menubar()
+        self.layout = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         simbolos = [
             "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "÷",
             "×", "%", "√", "(", ")", ".", "x²", "=", "←", "C"
         ]
 
+        # Crea una arreglo de botones de acuerdo 
         for simbolo in simbolos:
             self.botones.append(Gtk.Button(label=simbolo))
 
@@ -25,14 +31,16 @@ class Calculadora(Gtk.Window):
         self.armar()
 
     def propiedades(self):
-        self.set_position(1)
+        # Propiedades de la ventana
         self.set_resizable(False)
 
+        # Propiedades del Gtk.Entry 
         self.pantalla.set_max_length(35)
         self.pantalla.set_editable(False)
         self.pantalla.set_can_focus(False)
         self.pantalla.set_margin_bottom(5)
 
+        # Propiedades del layout (Grid)
         self.grid.set_row_spacing(4)
         self.grid.set_column_spacing(4)
         self.grid.set_margin_top(10)
@@ -40,6 +48,7 @@ class Calculadora(Gtk.Window):
         self.grid.set_margin_right(10)
         self.grid.set_margin_bottom(10)
 
+        # Propiedades de los botones
         for boton in self.botones:
             boton.set_can_focus(False)
 
@@ -53,8 +62,11 @@ class Calculadora(Gtk.Window):
             self.botones[i + 10].set_tooltip_text(etiquetas[i])
         
     def armar(self):
-        self.add(self.grid)
+        self.add(self.layout)
+        self.layout.pack_end(self.grid, False, False, 0)
+        self.layout.pack_start(self.menubar, False, False, 0)
 
+        # attach: Elemento hijo, número de columna, número de fila, ancho, alto
         self.grid.attach(self.pantalla, 0, 0, 6, 1)
 
         self.grid.attach(self.botones[7],  0, 1, 1, 1)
@@ -102,9 +114,9 @@ class Calculadora(Gtk.Window):
     def btn_clicked(self, widget):
         if len(self.texto) < 35:
             self.texto += widget.get_label()
-        self.texto = self.texto.replace("x²", "^")
+            self.texto = self.texto.replace("x²", "^")
 
-        self.pantalla.set_text(self.texto)
+            self.pantalla.set_text(self.texto)
 
     def limpiar_pantalla(self, widget):
         self.texto = ""
@@ -134,17 +146,19 @@ class Calculadora(Gtk.Window):
 
     def key_controller(self, widget, event):
         caracter = ""
-        n = [
+        caracteres_permitidos = [
             "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", "%",
             "(", ")", "."
         ]
 
+        # Tecla 'Enter'
         if event.hardware_keycode == 36 or event.hardware_keycode == 104:
             self.calcular(widget)
+        # Tecla 'Backspace
         elif event.hardware_keycode == 22:
             self.borrar(widget)
         else:
-            if event.string in n:
+            if event.string in caracteres_permitidos:
                 caracter = event.string
             elif event.string == "*":
                 caracter = "×"
